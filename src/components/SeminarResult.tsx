@@ -1,0 +1,196 @@
+type Topic = {
+  title: string;
+  description: string;
+  estimated_minutes: number;
+};
+
+type Participant = {
+  name: string;
+  topics: string[];
+  estimated_minutes: number;
+};
+
+type Slide = {
+  number: number;
+  title: string;
+  content: string[];
+  participant: string;
+  estimated_minutes: number;
+};
+
+export type SeminarPlan = {
+  title: string;
+  topics: Topic[];
+  participants: Participant[];
+  slides: Slide[];
+  total_duration_minutes: number;
+  references: string[];
+  mandatory_topics: string[];
+};
+
+type SeminarResultProps = {
+  plan: SeminarPlan;
+  onNewPlanning: () => void;
+};
+
+function SeminarResult({
+  plan,
+  onNewPlanning,
+}: SeminarResultProps) {
+  return (
+    <section className="result">
+      <header className="result-header">
+        <div>
+          <span className="result-label">Planejamento criado</span>
+
+          <h2>{plan.title}</h2>
+
+          <p>
+            {plan.total_duration_minutes} minutos ·{" "}
+            {plan.participants.length} participantes
+          </p>
+        </div>
+      </header>
+
+      <section className="result-section">
+        <div className="section-heading">
+          <h3>Estrutura do seminário</h3>
+          <p>
+            Organização dos principais tópicos da apresentação.
+          </p>
+        </div>
+
+        <div className="topic-list">
+          {plan.topics.map((topic, index) => (
+            <article className="topic-card" key={topic.title}>
+              <div className="topic-number">
+                {String(index + 1).padStart(2, "0")}
+              </div>
+
+              <div className="topic-content">
+                <div className="topic-title">
+                  <h4>{topic.title}</h4>
+
+                  <span>
+                    {topic.estimated_minutes} min
+                  </span>
+                </div>
+
+                <p>{topic.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="result-section">
+        <div className="section-heading">
+          <h3>Divisão dos participantes</h3>
+          <p>
+            Distribuição dos tópicos e tempo de fala.
+          </p>
+        </div>
+
+        <div className="participants-list">
+          {plan.participants.map((participant) => (
+            <article
+              className="participant-card"
+              key={participant.name}
+            >
+              <div className="participant-header">
+                <h4>{participant.name}</h4>
+
+                <span>
+                  {participant.estimated_minutes} min
+                </span>
+              </div>
+
+              <ul>
+                {participant.topics.map((topic) => (
+                  <li key={topic}>{topic}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="result-section">
+        <div className="section-heading">
+          <h3>Slides</h3>
+          <p>
+            Estrutura sugerida para cada slide da apresentação.
+          </p>
+        </div>
+
+        <div className="slides-list">
+          {plan.slides.map((slide) => (
+            <article
+              className="slide-card"
+              key={slide.number}
+            >
+              <div className="slide-number">
+                {String(slide.number).padStart(2, "0")}
+              </div>
+
+              <div className="slide-content">
+                <div className="slide-header">
+                  <h4>{slide.title}</h4>
+
+                  <span>
+                    {slide.estimated_minutes} min
+                  </span>
+                </div>
+
+                <ul>
+                  {slide.content.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+
+                <small>
+                  Apresentado por {slide.participant}
+                </small>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {plan.references.length > 0 && (
+        <section className="result-section">
+          <div className="section-heading">
+            <h3>Referências</h3>
+          </div>
+
+          <ul className="references-list">
+            {plan.references.map((reference) => (
+              <li key={reference}>
+                <a
+                  href={reference}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {reference}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <div className="result-actions">
+        <button
+            type="button"
+            className="new-planning-button"
+            onClick={onNewPlanning}
+        >
+            ← Criar outro planejamento
+        </button>
+      </div>
+    </section>
+  );
+}
+
+export default SeminarResult;
+
