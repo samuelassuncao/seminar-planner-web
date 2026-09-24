@@ -55,7 +55,7 @@ function SeminarResult({
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/seminars/pptx",
+        `${import.meta.env.VITE_API_URL}/api/seminars/pptx`,
         {
           method: "POST",
           headers: {

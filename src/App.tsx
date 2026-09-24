@@ -57,7 +57,7 @@ const data = {
 
 try {
   const response = await fetch(
-    "http://localhost:8000/api/seminars",
+    `${import.meta.env.VITE_API_URL}/api/seminars`,
     {
       method: "POST",
       headers: {
